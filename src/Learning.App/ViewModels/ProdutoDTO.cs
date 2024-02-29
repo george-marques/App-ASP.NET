@@ -34,7 +34,9 @@ namespace Learning.App.ViewModels
         [DisplayName("Ativo?")]
         public bool Ativo { get; set; }
 
-        public FornecedorDTO Fornecedor { get; set; 
+        public FornecedorDTO Fornecedor { get; set; }
+
+        public IEnumerable<FornecedorDTO> Fornecedores { get; set; }
 
     }
 }
