@@ -1,5 +1,7 @@
 using Learning.App.Data;
+using Learning.Business.Interfaces;
 using Learning.Data.Context;
+using Learning.Data.Repository;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
@@ -18,6 +20,13 @@ builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
     .AddEntityFrameworkStores<ApplicationDbContext>();
 builder.Services.AddControllersWithViews();
+
+//Injeção de dependencia do meu contexto do banco e repositories
+builder.Services.AddScoped<AppDbContext>();
+builder.Services.AddScoped<IProdutoRepository, ProdutoRepository>();
+builder.Services.AddScoped<IFornecedorRepository, FornecedorRepository>();
+builder.Services.AddScoped<IEnderecoRepository, EnderecoRepository>();
+
 
 var app = builder.Build();
 
