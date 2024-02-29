@@ -21,6 +21,9 @@ builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.Requ
     .AddEntityFrameworkStores<ApplicationDbContext>();
 builder.Services.AddControllersWithViews();
 
+//Configurando AutoMapper
+builder.Services.AddAutoMapper(typeof(Program));
+
 //Injeção de dependencia do meu contexto do banco e repositories
 builder.Services.AddScoped<AppDbContext>();
 builder.Services.AddScoped<IProdutoRepository, ProdutoRepository>();
