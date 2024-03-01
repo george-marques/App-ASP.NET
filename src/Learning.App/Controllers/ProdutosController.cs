@@ -57,6 +57,14 @@ namespace Learning.App.Controllers
             if (!ModelState.IsValid)
                 return View(produtoDTO);
 
+            var imgPrefixo = Guid.NewGuid() + "_";
+
+            if(!await UploadArquivo(produtoDTO.ImagemUpload, imgPrefixo)){
+                return View(produtoDTO);
+            }
+
+            produtoDTO.Imagem = imgPrefixo + produtoDTO.ImagemUpload.FileName;
+
             await _produtoRepository.Adicionar(_mapper.Map<Produto>(produtoDTO));
 
             return RedirectToAction(nameof(Index));
@@ -134,6 +142,22 @@ namespace Learning.App.Controllers
             produto.Fornecedores = _mapper.Map<IEnumerable<FornecedorDTO>>(await _fornecedorRepository.ObterTodos());
 
             return produto;
+        }
+
+        private async Task<bool> UploadArquivo(IFormFile arquivo, string prefixo)
+        {
+
+            if(arquivo.Length <= 0) return false;
+
+            var path = Path.Combine(Directory.GetCurrentDirectory(),"wwwroot/images", prefixo + arquivo.FileName);
+
+            using(var stream = new FileStream(path, FileMode.Create))
+            {
+                await arquivo.CopyToAsync(stream);
+            }
+
+            return true;
+
         }
     }
 }

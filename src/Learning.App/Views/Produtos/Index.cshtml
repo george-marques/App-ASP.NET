@@ -19,7 +19,7 @@
                 @Html.DisplayNameFor(model => model.Descricao)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Imagem)
+                
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.Valor)
@@ -28,7 +28,7 @@
                 @Html.DisplayNameFor(model => model.Ativo)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Fornecedor)
+                @Html.DisplayNameFor(model => model.Fornecedor.Nome)
             </th>
             <th></th>
         </tr>
@@ -44,7 +44,7 @@
                     @Html.DisplayFor(modelItem => item.Descricao)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.Imagem)
+                    
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.Valor)
@@ -53,7 +53,7 @@
                     @Html.DisplayFor(modelItem => item.Ativo)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.Fornecedor.Documento)
+                    @Html.DisplayFor(modelItem => item.Fornecedor.Nome)
                 </td>
                 <td>
                     <a class="btn btn-warning" asp-action="Edit" asp-route-id="@item.Id">Editar</a>
