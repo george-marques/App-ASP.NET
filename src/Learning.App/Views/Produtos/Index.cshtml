@@ -16,22 +16,20 @@
     <thead>
         <tr>
             <th>
+                @Html.DisplayNameFor(model => model.Imagem)
+            </th>
+            <th>
                 @Html.DisplayNameFor(model => model.Nome)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Descricao)
-            </th>
-            <th>
-                
+                @Html.DisplayNameFor(model => model.Fornecedor.Nome)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.Valor)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.Ativo)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Fornecedor.Nome)
+
             </th>
             <th></th>
         </tr>
@@ -41,23 +39,28 @@
         {
             <tr>
                 <td>
+                    <img src="~/images/@item.Imagem" alt="@item.Imagem" style="width: 100px; height:100px" />
+                </td>
+                <td>
                     @Html.DisplayFor(modelItem => item.Nome)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.Descricao)
-                </td>
-                <td>
-                    
+                    @Html.DisplayFor(modelItem => item.Fornecedor.Nome)
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.Valor)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.Ativo)
+                    @if (item.Ativo)
+                    {
+                        <span>Ativo</span>
+                    }
+                    else
+                    {
+                        <span>Inativo</span>
+                    }
                 </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Fornecedor.Nome)
-                </td>
+               
                 <td>
                     <a class="btn btn-warning" asp-action="Edit" asp-route-id="@item.Id">
                         <i class="fa-solid fa-pencil"></i> Editar

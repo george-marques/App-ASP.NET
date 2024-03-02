@@ -92,10 +92,31 @@ namespace Learning.App.Controllers
             if (id != produtoDTO.Id)
                 return NotFound();
 
+            var produtoAtualizado = await ObterProduto(id);
+            produtoDTO.Fornecedor = produtoAtualizado.Fornecedor;
+            produtoDTO.Imagem = produtoAtualizado.Imagem;
+
             if (!ModelState.IsValid)
                 return View(produtoDTO);
 
-            await _produtoRepository.Atualizar(_mapper.Map<Produto>(produtoDTO));
+            if(produtoDTO.ImagemUpload != null)
+            {
+                var imgPrefixo = Guid.NewGuid() + "_";
+
+                if (!await UploadArquivo(produtoDTO.ImagemUpload, imgPrefixo))
+                {
+                    return View(produtoDTO);
+                }
+
+                produtoAtualizado.Imagem = imgPrefixo + produtoDTO.ImagemUpload.FileName;
+            }
+
+            produtoAtualizado.Nome = produtoDTO.Nome;
+            produtoAtualizado.Descricao = produtoDTO.Descricao;
+            produtoAtualizado.Valor = produtoDTO.Valor;
+            produtoAtualizado.Ativo = produtoDTO.Ativo;
+
+            await _produtoRepository.Atualizar(_mapper.Map<Produto>(produtoAtualizado));
 
             return RedirectToAction(nameof(Index));
         }

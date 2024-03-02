@@ -26,7 +26,16 @@ namespace Learning.Data.Repository
 
         public virtual async Task Atualizar(T entity)
         {
-            DbSet.Update(entity);
+            var existingEntity = await DbSet.FindAsync(entity.Id); // Supondo que o Id seja a chave primária da entidade
+            if (existingEntity != null)
+            {
+                Db.Entry(existingEntity).CurrentValues.SetValues(entity);
+            }
+            else
+            {
+                DbSet.Update(entity);
+            }
+
             await SaveChanges();
         }
 
