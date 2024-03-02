@@ -1,4 +1,5 @@
-﻿using System.ComponentModel;
+﻿using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
+using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 
 namespace Learning.App.ViewModels
@@ -23,6 +24,7 @@ namespace Learning.App.ViewModels
 
         public IFormFile ImagemUpload { get; set; }
 
+        [ValidateNever]
         public string Imagem { get; set; }
 
         [Required(ErrorMessage = "O campo {0} é obrigatório.")]
@@ -34,8 +36,10 @@ namespace Learning.App.ViewModels
         [DisplayName("Ativo?")]
         public bool Ativo { get; set; }
 
+        [ValidateNever]
         public FornecedorDTO Fornecedor { get; set; }
-
+        
+        [ValidateNever]
         public IEnumerable<FornecedorDTO> Fornecedores { get; set; }
 
     }

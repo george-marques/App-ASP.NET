@@ -54,6 +54,7 @@ namespace Learning.App.Controllers
         public async Task<IActionResult> Create(ProdutoDTO produtoDTO)
         {
             produtoDTO = await PopularFornecedores(produtoDTO);
+
             if (!ModelState.IsValid)
                 return View(produtoDTO);
 
