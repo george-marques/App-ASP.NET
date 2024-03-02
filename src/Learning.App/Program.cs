@@ -4,6 +4,9 @@ using Learning.Data.Context;
 using Learning.Data.Repository;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using System.Globalization;
+using Microsoft.AspNetCore.Localization;
+using Microsoft.Extensions.Options;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -19,7 +22,20 @@ builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
 builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
     .AddEntityFrameworkStores<ApplicationDbContext>();
-builder.Services.AddControllersWithViews();
+builder.Services.AddControllersWithViews(options =>
+{
+    options.ModelBindingMessageProvider.SetAttemptedValueIsInvalidAccessor((x, y) => "O valor fornecido é inválido.");
+    options.ModelBindingMessageProvider.SetMissingBindRequiredValueAccessor(x => "O campo é obrigatório.");
+    options.ModelBindingMessageProvider.SetMissingKeyOrValueAccessor(() => "O campo é obrigatório.");
+    options.ModelBindingMessageProvider.SetMissingRequestBodyRequiredValueAccessor(() => "É necessário fornecer um corpo na solicitação HTTP.");
+    options.ModelBindingMessageProvider.SetNonPropertyAttemptedValueIsInvalidAccessor(x => "O valor fornecido é inválido.");
+    options.ModelBindingMessageProvider.SetNonPropertyUnknownValueIsInvalidAccessor(() => "O valor fornecido é inválido.");
+    options.ModelBindingMessageProvider.SetNonPropertyValueMustBeANumberAccessor(() => "O campo deve ser um número.");
+    options.ModelBindingMessageProvider.SetUnknownValueIsInvalidAccessor(x => "O valor fornecido é inválido.");
+    options.ModelBindingMessageProvider.SetValueIsInvalidAccessor(x => "O valor fornecido é inválido para " + x);
+    options.ModelBindingMessageProvider.SetValueMustBeANumberAccessor(x => "O campo " + x + " deve ser um número.");
+    options.ModelBindingMessageProvider.SetValueMustNotBeNullAccessor(x => "O campo " + x + " não pode ser nulo.");
+});
 
 //Configurando AutoMapper
 builder.Services.AddAutoMapper(typeof(Program));
@@ -44,6 +60,15 @@ else
     // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
     app.UseHsts();
 }
+
+var defaultCulture = new CultureInfo("pt-BR");
+var localizationOptions = new RequestLocalizationOptions
+{
+    DefaultRequestCulture = new RequestCulture(defaultCulture),
+    SupportedCultures = new List<CultureInfo> { defaultCulture },
+    SupportedUICultures = new List<CultureInfo> { defaultCulture }
+};
+app.UseRequestLocalization(localizationOptions);
 
 app.UseHttpsRedirection();
 app.UseStaticFiles();

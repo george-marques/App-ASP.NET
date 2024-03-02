@@ -1,2 +1,24 @@
 ﻿<script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
 <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
+
+
+<script>
+    // Sobrescreve o método de validação de intervalo para aceitar números formatados com vírgula
+    $.validator.methods.range = function (value, element, param) {
+        var globalizedValue = value.replace(",", ".");
+        return this.optional(element) || (globalizedValue >= param[0] && globalizedValue <= param[1]);
+    };
+
+    // Sobrescreve o método de validação de número para aceitar números formatados com ponto ou vírgula
+    $.validator.methods.number = function (value, element) {
+        // O padrão aceita números inteiros ou decimais com ponto ou vírgula
+        return this.optional(element) || /^-?\d+(,\d{1,3})*(\.\d+)?$/.test(value);
+    };
+
+    // Sobrescreve o método de validação de data
+    $.validator.methods.date = function (value, element) {
+        // Verifica se a data está no formato dd/MM/yyyy
+        var date = value.split("/");
+        return this.optional(element) || !isNaN(Date.parse(date[2] + "-" + date[1] + "-" + date[0]));
+    };
+</script>
