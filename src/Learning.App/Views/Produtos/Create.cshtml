@@ -16,32 +16,33 @@
                     <form enctype="multipart/form-data" method="post" asp-action="Create">
                         <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                         <div class="form-group">
-                            <label asp-for="FornecedorId" class="control-label">Fornecedor</label>
+                            <label asp-for="FornecedorId" class="control-label" style="font-weight: bold;">Fornecedor</label>
                             <select asp-for="FornecedorId" class="form-control" asp-items="@(new SelectList(Model.Fornecedores, "Id", "Nome"))">
                                 <option></option>
                             </select>
                             <span asp-validation-for="FornecedorId" class="text-danger"></span>
                         </div>
                         <div class="form-group">
-                            <label asp-for="Nome" class="control-label">Nome</label>
+                            <label asp-for="Nome" class="control-label" style="font-weight: bold;">Nome</label>
                             <input asp-for="Nome" class="form-control" />
                             <span asp-validation-for="Nome" class="text-danger"></span>
                         </div>
                         <div class="form-group">
-                            <label asp-for="Descricao" class="control-label">Descrição</label>
-                            <input asp-for="Descricao" class="form-control" />
+                            <label asp-for="Descricao" class="control-label" style="font-weight: bold;">Descrição</label>
+                            <textarea cols="40" rows="5" asp-for="Descricao" class="form-control"></textarea>
                             <span asp-validation-for="Descricao" class="text-danger"></span>
                         </div>
                         <div class="form-group">
-                            <label asp-for="ImagemUpload" class="control-label">Imagem</label>
-                            <div class="custom-file">
+                            <label asp-for="ImagemUpload" class="control-label" style="font-weight: bold;">Imagem</label>
+                            <div class="custom-file mb-3">
                                 <input type="file" id="ImagemUpload" class="custom-file-input" asp-for="ImagemUpload" />
-                                
+                                <label class="custom-file-label" for="ImagemUpload"></label>
                             </div>
                             <span asp-validation-for="ImagemUpload" class="text-danger"></span>
                         </div>
+
                         <div class="form-group">
-                            <label asp-for="Valor" class="control-label">Valor</label>
+                            <label asp-for="Valor" class="control-label" style="font-weight: bold;">Valor</label>
                             <div class="input-group">
                                 <div class="input-group-prepend">
                                     <span class="input-group-text">R$</span>
@@ -49,15 +50,15 @@
                                 <input asp-for="Valor" class="form-control" />
                             </div>
                             <span asp-validation-for="Valor" class="text-danger"></span>
-                        </div>
+                        </div><br />
                         <div class="form-group form-check">
                             <input class="form-check-input" asp-for="Ativo" id="Ativo" />
-                            <label class="form-check-label" for="Ativo">@Html.DisplayNameFor(model => model.Ativo)</label>
+                            <label class="form-check-label" style="font-weight: bold;" for="Ativo">@Html.DisplayNameFor(model => model.Ativo)</label>
                         </div>
                         <br />
                         <div class="form-group">
                             <button type="submit" class="btn btn-success">Salvar</button>
-                            <a class="btn btn-primary" asp-action="Index">Voltar</a>
+                            <a class="btn btn-dark" asp-action="Index">Voltar</a>
                         </div>
                     </form>
                 </div>

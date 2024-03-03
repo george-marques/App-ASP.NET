@@ -17,39 +17,39 @@
                         <input type="hidden" asp-for="Id" />
 
                         <div class="form-group">
-                            <label asp-for="FornecedorId" class="control-label"></label>
+                            <label asp-for="FornecedorId" class="control-label" style="font-weight: bold;"></label>
                             <input asp-for="@Model.Fornecedor.Nome" class="form-control" readonly />
                         </div>
 
                         <div class="form-group">
-                            <label asp-for="Nome" class="control-label"></label>
+                            <label asp-for="Nome" class="control-label" style="font-weight: bold;"></label>
                             <input asp-for="Nome" class="form-control" />
                             <span asp-validation-for="Nome" class="text-danger"></span>
                         </div>
                         <div class="form-group">
-                            <label asp-for="Descricao" class="control-label"></label>
+                            <label asp-for="Descricao" class="control-label" style="font-weight: bold;"></label>
                             <textarea cols="40" rows="5" asp-for="Descricao" class="form-control"></textarea>
                             <span asp-validation-for="Descricao" class="text-danger"></span>
                         </div>
                         <div class="form-group">
-                            <label>Imagem</label><br />
+                            <label style ="font-weight: bold;">Imagem</label><br />
                             <img src="~/images/@Model.Imagem" alt="@Model.Imagem" style="width: 300px; height:300px" />
                         </div>
                         <div class="form-group">
-                            <label asp-for="Valor" class="control-label"></label>
+                            <label asp-for="Valor" class="control-label" style="font-weight: bold;"></label>
                             <input asp-for="Valor" class="form-control" />
                             <span asp-validation-for="Valor" class="text-danger"></span>
                         </div>
                         <br/>
                         <div class="form-group form-check">
-                            <label class="form-check-label">
+                            <label class="form-check-label" style="font-weight: bold;">
                                 <input class="form-check-input" asp-for="Ativo" /> @Html.DisplayNameFor(model => model.Ativo)
                             </label>
                         </div>
                         <br />
                         <div class="form-group">
                             <button type="submit" class="btn btn-success">Salvar</button>
-                            <a class="btn btn-info" href="javascript:window.history.back()" ;>Voltar</a>
+                            <a class="btn btn-dark" href="javascript:window.history.back()" ;>Voltar</a>
                         </div>
                     </form>
                 </div>
