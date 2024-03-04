@@ -9,12 +9,14 @@ namespace Learning.App.Controllers
     public class FornecedoresController : Controller
     {
         private readonly IFornecedorRepository _fornecedorRepository;
+        private readonly IEnderecoRepository _enderecoRepository;
         private readonly IMapper _mapper;
 
 
-        public FornecedoresController(IFornecedorRepository fornecedorRepository, IMapper mapper)
+        public FornecedoresController(IFornecedorRepository fornecedorRepository, IEnderecoRepository enderecoRepository, IMapper mapper)
         {
             _fornecedorRepository = fornecedorRepository;
+            _enderecoRepository = enderecoRepository;
             _mapper = mapper;
         }
 
@@ -106,13 +108,50 @@ namespace Learning.App.Controllers
         public async Task<IActionResult> DeleteConfirmed(Guid id)
         {
             var fornecedorDTO = await ObterFornecedorEndereco(id);
-           
+
             if (fornecedorDTO == null)
                 return NotFound();
 
             await _fornecedorRepository.Remover(id);
-            
+
             return RedirectToAction(nameof(Index));
+        }
+
+        public async Task<IActionResult> AtualizarEndereco(Guid id)
+        {
+            var fornecedor = await ObterFornecedorEndereco(id);
+
+            if (fornecedor == null)
+                return NotFound();
+
+            return PartialView("_ModalEditEndereco", new FornecedorDTO { Endereco = fornecedor.Endereco });
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> AtualizarEndereco(FornecedorDTO fornecedorDTO)
+        {
+            ModelState.Remove("Nome");
+            ModelState.Remove("Documento");
+            ModelState.Remove("Produtos");
+
+            if (!ModelState.IsValid)
+                return PartialView("_ModalEditEndereco", fornecedorDTO);
+
+            await _enderecoRepository.Atualizar(_mapper.Map<Endereco>(fornecedorDTO.Endereco));
+
+            var url = Url.Action("ObterEndereco", "Fornecedores", new { id = fornecedorDTO.Endereco.FornecedorId });
+            return Json(new { success = true, url });
+        }
+
+        public async Task<IActionResult> ObterEndereco(Guid id)
+        {
+            var fornecedor = await ObterFornecedorEndereco(id);
+
+            if (fornecedor == null)
+                return NotFound();
+
+            return PartialView("_DetailsEndereco", fornecedor);
         }
 
         private async Task<FornecedorDTO> ObterFornecedorEndereco(Guid id)

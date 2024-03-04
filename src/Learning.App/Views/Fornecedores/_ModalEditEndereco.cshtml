@@ -1,0 +1,24 @@
+﻿@model Learning.App.ViewModels.FornecedorDTO
+@{
+    ViewData["Title"] = "Atualizar Endereço";
+}
+<div class="modal-header">
+    <h4 class="modal-title">@ViewData["Title"]</h4>
+    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+        <span class="sr-only">Fechar</span>
+    </button>
+</div>
+
+<form asp-action="AtualizarEndereco">
+    <div class="modal-body">
+        <input type="hidden" asp-for="Endereco.FornecedorId" />
+        <input type="hidden" asp-for="Endereco.Id" />
+        <partial name="_Endereco" />
+    </div>
+
+    <div class="modal-footer">
+        <button type="submit" class="btn btn-success">Atualizar Endereço</button>
+        <button type="button" class="btn btn-dark" data-dismiss="modal">Voltar</button>
+    </div>
+</form>

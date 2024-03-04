@@ -33,7 +33,7 @@
                     <th>
                         @Html.DisplayNameFor(model => model.Endereco.Estado)
                     </th>
-                    <th>Ações</th>
+                    <th>Ação</th>
                 </tr>
             </thead>
 
@@ -60,7 +60,7 @@
                     @Html.DisplayFor(model => model.Endereco.Estado)
                 </td>
                 <td>
-                    <a class="btn btn-warning" >
+                    <a class="btn btn-warning" data-modal="" asp-route-id="@Model.Id" asp-action="AtualizarEndereco" >
                         <i class="fa-solid fa-pencil"></i> Editar
                     </a>
                 </td>
