@@ -1,14 +1,72 @@
 ﻿@model Learning.App.ViewModels.FornecedorDTO
 
 @{
-    ViewData["Title"] = "Edit";
+    ViewData["Title"] = "Editar";
 }
 
-<h1>Editar</h1>
+<h4 style="padding-top:50px">@ViewData["Title"]</h4>
 <hr />
-        <form asp-action="Edit">
-            <partial name="_Form" />
-        </form>
+<form asp-action="Edit">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-md-12">
+                <div class="card shadow">
+                    <div class="card-body">
+                        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+                        <div class="card mb-3">
+                            <div class="card-body">
+                                <h5 class="card-title text-center">Dados pessoais</h5>
+                                <div class="form-group">
+                                    <label asp-for="Nome" class="control-label" style="font-weight: bold;">Nome</label>
+                                    <input asp-for="Nome" class="form-control" />
+                                    <span asp-validation-for="Nome" class="text-danger"></span>
+                                </div>
+                                <div class="form-group">
+                                    <label asp-for="Documento" class="control-label" style="font-weight: bold;">Documento</label>
+                                    <input asp-for="Documento" class="form-control" />
+                                    <span asp-validation-for="Documento" class="text-danger"></span>
+                                </div><br />
+                                <div class="form-group">
+                                    <label asp-for="TipoFornecedor" class="control-label" style="font-weight: bold;">Tipo de Fornecedor</label><br />
+                                    <div>
+                                        <input type="radio" value="1" asp-for="TipoFornecedor" checked /> Pessoa Física<br />
+                                        <input type="radio" value="2" asp-for="TipoFornecedor" /> Pessoa Jurídica<br />
+                                    </div>
+                                </div><br />
+                                <div class="form-group form-check">
+                                    <input class="form-check-input" asp-for="Ativo" />
+                                    <label class="form-check-label" for="Ativo" style="font-weight: bold;">@Html.DisplayNameFor(model => model.Ativo)</label>
+                                </div>
+                            </div>
+                        </div>
+                        <input type="hidden" asp-for="Produtos" />
+                        <br />
+
+                        <div class="form-group">
+                            <button type="submit" class="btn btn-success">Salvar</button>
+                            <a class="btn btn-dark" href="javascript:window.history.back()" ;>Voltar</a>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <hr />
+
+</form>
+<div>
+    <partial name="_DetailsEndereco" />
+</div>
+
+
+<h4>Produtos</h4>
+<hr />
+<div>
+    <partial name="../Produtos/_ListProdutos" model="@Model.Produtos"/>
+</div>
 
 @section Scripts {
     @{

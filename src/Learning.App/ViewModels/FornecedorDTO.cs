@@ -1,4 +1,5 @@
-﻿using System.ComponentModel;
+﻿using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
+using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 
 namespace Learning.App.ViewModels
@@ -20,6 +21,7 @@ namespace Learning.App.ViewModels
         [DisplayName("Tipo")]
         public int TipoFornecedor { get; set; }
 
+        [ValidateNever]
         [DisplayName("Endereço")]
         public EnderecoDTO Endereco { get; set; }
 

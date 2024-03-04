@@ -1,42 +1,59 @@
-﻿@model Learning.App.ViewModels.FornecedorDTO
+﻿@using Learning.App.Extensions
+@model Learning.App.ViewModels.FornecedorDTO
 
 @{
-    ViewData["Title"] = "Details";
+    ViewData["Title"] = "Detalhes";
 }
 
-<h1>Details</h1>
-
+<h4 style="padding-top:50px">@ViewData["Title"]</h4>
+<hr />
 <div>
-    <h4>FornecedorDTO</h4>
-    <hr />
+
     <dl class="row">
-        <dt class = "col-sm-2">
+        <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.Nome)
         </dt>
-        <dd class = "col-sm-10">
+        <dd class="col-sm-10">
             @Html.DisplayFor(model => model.Nome)
         </dd>
-        <dt class = "col-sm-2">
+        <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.Documento)
         </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Documento)
+        <dd class="col-sm-10">
+            @this.FormataDocumento(@Model.TipoFornecedor, @Model.Documento)
         </dd>
-        <dt class = "col-sm-2">
+        <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.TipoFornecedor)
         </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.TipoFornecedor)
+        <dd class="col-sm-10">
+            @if (Model.TipoFornecedor == 1)
+            {
+                <span>Pessoa Física</span>
+            }
+            else
+            {
+                <span>Pessoa Jurídica</span>
+            }
         </dd>
-        <dt class = "col-sm-2">
+        <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.Ativo)
         </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Ativo)
+        <dd class="col-sm-10">
+            @if (@Model.Ativo)
+            {
+                <span style="background-color: green; border-radius: 8px; padding: 5px 10px; color: white;">Ativo</span>
+            }
+            else
+            {
+                <span style="background-color: grey; border-radius: 8px; padding: 5px 10px; color: white;">Inativo</span>
+            }
         </dd>
     </dl>
 </div>
 <div>
-    <a asp-action="Edit" asp-route-id="@Model?.Id">Edit</a> |
-    <a asp-action="Index">Back to List</a>
+    <a class="btn btn-warning" asp-action="Edit" asp-route-id="@Model?.Id">Editar</a>
+    <a class="btn btn-dark" href="javascript:window.history.back()" ;>Voltar</a>
 </div>
+<br/>
+<hr/>
+<partial name="_DetailsEndereco"/>

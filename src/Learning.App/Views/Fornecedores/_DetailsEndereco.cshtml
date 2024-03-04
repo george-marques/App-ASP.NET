@@ -1,0 +1,72 @@
+﻿@model Learning.App.ViewModels.FornecedorDTO
+
+<div style="padding-top:20px">
+    <div>
+        <h4>Endereço</h4>
+        <hr />
+    </div>
+
+
+    @if (Model != null)
+    {
+        <table class="table table-hover text-center">
+            <thead class="bg-dark">
+                <tr class="text-white">
+                    <th>
+                        @Html.DisplayNameFor(model => model.Endereco.Logradouro)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Endereco.Numero)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Endereco.Complemento)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Endereco.Bairro)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Endereco.Cep)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Endereco.Cidade)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Endereco.Estado)
+                    </th>
+                    <th>Ações</th>
+                </tr>
+            </thead>
+
+            <tr>
+                <td>
+                    @Html.DisplayFor(model => model.Endereco.Logradouro)
+                </td>
+                <td>
+                    @Html.DisplayFor(model => model.Endereco.Numero)
+                </td>
+                <td>
+                    @Html.DisplayFor(model => model.Endereco.Complemento)
+                </td>
+                <td>
+                    @Html.DisplayFor(model => model.Endereco.Bairro)
+                </td>
+                <td>
+                    @Html.DisplayFor(model => model.Endereco.Cep)
+                </td>
+                <td>
+                    @Html.DisplayFor(model => model.Endereco.Cidade)
+                </td>
+                <td>
+                    @Html.DisplayFor(model => model.Endereco.Estado)
+                </td>
+                <td>
+                    <a class="btn btn-warning" >
+                        <i class="fa-solid fa-pencil"></i> Editar
+                    </a>
+                </td>
+            </tr>
+
+        </table>
+
+    }
+</div>
