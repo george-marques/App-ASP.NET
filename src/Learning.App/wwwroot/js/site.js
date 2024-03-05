@@ -42,3 +42,55 @@
         }
     });
 }
+
+function SearchPostalCode() {
+    $(document).ready(function () {
+
+        function clearPostalCodeForm() {
+            $('#Endereco_Logradouro').val('');
+            $('#Endereco_Bairro').val('');
+            $('#Endereco_Cidade').val('');
+            $('#Endereco_Estado').val('');
+        }
+
+        $('#Endereco_Cep').blur(function () {
+
+            var postalCode = $(this).val().replace(/\D/g, '');
+
+            if (postalCode != '') {
+
+                var validatePostalCode = /^[0-9]{8}$/;
+
+                if (validatePostalCode.test(postalCode)) {
+
+                    $('#Endereco_Logradouro').val('...');
+                    $('#Endereco_Bairro').val('...');
+                    $('#Endereco_Cidade').val('...');
+                    $('#Endereco_Estado').val('...');
+
+                    $.getJSON('https://viacep.com.br/ws/' + postalCode + '/json/?callback=?',
+                        function (data) {
+
+                            if (!('erro' in data)) {
+                                $('#Endereco_Logradouro').val(data.logradouro);
+                                $('#Endereco_Bairro').val(data.bairro);
+                                $('#Endereco_Cidade').val(data.localidade);
+                                $('#Endereco_Estado').val(data.uf);
+                            }
+                            else {
+                                clearPostalCodeForm();
+                                alert('CEP não encontrado.');
+                            }
+                        });
+                }
+                else {
+                    clearPostalCodeForm();
+                    alert('Formato de CEP inválido');
+                }
+            }
+            else {
+                clearPostalCodeForm();
+            }
+        });
+    });
+}
