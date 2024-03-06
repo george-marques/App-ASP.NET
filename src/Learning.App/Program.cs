@@ -1,12 +1,8 @@
 using Learning.App.Data;
-using Learning.Business.Interfaces;
 using Learning.Data.Context;
-using Learning.Data.Repository;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using System.Globalization;
-using Microsoft.AspNetCore.Localization;
-using Microsoft.Extensions.Options;
+using Learning.App.Configurations;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -22,30 +18,15 @@ builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
 builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
     .AddEntityFrameworkStores<ApplicationDbContext>();
-builder.Services.AddControllersWithViews(options =>
-{
-    options.ModelBindingMessageProvider.SetAttemptedValueIsInvalidAccessor((x, y) => "O valor fornecido é inválido.");
-    options.ModelBindingMessageProvider.SetMissingBindRequiredValueAccessor(x => "O campo é obrigatório.");
-    options.ModelBindingMessageProvider.SetMissingKeyOrValueAccessor(() => "O campo é obrigatório.");
-    options.ModelBindingMessageProvider.SetMissingRequestBodyRequiredValueAccessor(() => "É necessário fornecer um corpo na solicitação HTTP.");
-    options.ModelBindingMessageProvider.SetNonPropertyAttemptedValueIsInvalidAccessor(x => "O valor fornecido é inválido.");
-    options.ModelBindingMessageProvider.SetNonPropertyUnknownValueIsInvalidAccessor(() => "O valor fornecido é inválido.");
-    options.ModelBindingMessageProvider.SetNonPropertyValueMustBeANumberAccessor(() => "O campo deve ser um número.");
-    options.ModelBindingMessageProvider.SetUnknownValueIsInvalidAccessor(x => "O valor fornecido é inválido.");
-    options.ModelBindingMessageProvider.SetValueIsInvalidAccessor(x => "O valor fornecido é inválido para " + x);
-    options.ModelBindingMessageProvider.SetValueMustBeANumberAccessor(x => "O campo " + x + " deve ser um número.");
-    options.ModelBindingMessageProvider.SetValueMustNotBeNullAccessor(x => "O campo " + x + " não pode ser nulo.");
-});
+
+//Configurando MVC
+builder.Services.AddMvcConfiguration();
 
 //Configurando AutoMapper
 builder.Services.AddAutoMapper(typeof(Program));
 
 //Injeção de dependencia do meu contexto do banco e repositories
-builder.Services.AddScoped<AppDbContext>();
-builder.Services.AddScoped<IProdutoRepository, ProdutoRepository>();
-builder.Services.AddScoped<IFornecedorRepository, FornecedorRepository>();
-builder.Services.AddScoped<IEnderecoRepository, EnderecoRepository>();
-
+builder.Services.ResolveDependencies();
 
 var app = builder.Build();
 
@@ -57,18 +38,11 @@ if (app.Environment.IsDevelopment())
 else
 {
     app.UseExceptionHandler("/Home/Error");
-    // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
     app.UseHsts();
 }
 
-var defaultCulture = new CultureInfo("pt-BR");
-var localizationOptions = new RequestLocalizationOptions
-{
-    DefaultRequestCulture = new RequestCulture(defaultCulture),
-    SupportedCultures = new List<CultureInfo> { defaultCulture },
-    SupportedUICultures = new List<CultureInfo> { defaultCulture }
-};
-app.UseRequestLocalization(localizationOptions);
+//Configurando Globalização pt-BR
+app.UseGlobalizationConfig();
 
 app.UseHttpsRedirection();
 app.UseStaticFiles();
