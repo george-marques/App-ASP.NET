@@ -25,7 +25,7 @@ builder.Services.AddMvcConfiguration();
 //Configurando AutoMapper
 builder.Services.AddAutoMapper(typeof(Program));
 
-//Injeção de dependencia do meu contexto do banco e repositories
+//InjeÃ§Ã£o de dependencia do meu contexto do banco e repositories
 builder.Services.ResolveDependencies();
 
 var app = builder.Build();
@@ -41,7 +41,7 @@ else
     app.UseHsts();
 }
 
-//Configurando Globalização pt-BR
+//Configurando GlobalizaÃ§Ã£o pt-BR
 app.UseGlobalizationConfig();
 
 app.UseHttpsRedirection();
