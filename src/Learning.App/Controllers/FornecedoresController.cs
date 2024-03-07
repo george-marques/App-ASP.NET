@@ -6,6 +6,8 @@ using Learning.Business.Models;
 
 namespace Learning.App.Controllers
 {
+    [Route("")]
+    [Route("Fornecedores")]
     public class FornecedoresController : Controller
     {
         private readonly IFornecedorRepository _fornecedorRepository;
@@ -21,12 +23,14 @@ namespace Learning.App.Controllers
         }
 
         // GET: Fornecedores
+        [Route("lista-fornecedores")]
         public async Task<IActionResult> Index()
         {
             return View(_mapper.Map<IEnumerable<FornecedorDTO>>(await _fornecedorRepository.ObterTodos()));
         }
 
-        // GET: Fornecedores/Details/5
+        // GET: Fornecedores/Details/id
+        [Route("detalhes/{id:guid}")]
         public async Task<IActionResult> Details(Guid id)
         {
             var fornecedorDTO = await ObterFornecedorEndereco(id);
@@ -40,12 +44,14 @@ namespace Learning.App.Controllers
         }
 
         // GET: Fornecedores/Create
+        [Route("adicionar")]
         public IActionResult Create()
         {
             return View();
         }
 
         // POST: Fornecedores/Create
+        [Route("adicionar")]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(FornecedorDTO fornecedorDTO)
@@ -60,6 +66,7 @@ namespace Learning.App.Controllers
         }
 
         // GET: Fornecedores/Edit/5
+        [Route("editar/{id:guid}")]
         public async Task<IActionResult> Edit(Guid id)
         {
             var fornecedorDTO = await ObterFornecedorProdutosEndereco(id);
@@ -73,6 +80,7 @@ namespace Learning.App.Controllers
         }
 
         // POST: Fornecedores/Edit/5
+        [Route("editar/{id:guid}")]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(Guid id, FornecedorDTO fornecedorDTO)
@@ -92,6 +100,7 @@ namespace Learning.App.Controllers
         }
 
         // GET: Fornecedores/Delete/5
+        [Route("excluir/{id:guid}")]
         public async Task<IActionResult> Delete(Guid id)
         {
             var fornecedorDTO = await ObterFornecedorEndereco(id);
@@ -103,6 +112,7 @@ namespace Learning.App.Controllers
         }
 
         // POST: Fornecedores/Delete/5
+        [Route("excluir/{id:guid}")]
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(Guid id)
@@ -117,6 +127,8 @@ namespace Learning.App.Controllers
             return RedirectToAction(nameof(Index));
         }
 
+        // GET: Endereco
+        [Route("atualizar-endereco/{id:guid}")]
         public async Task<IActionResult> AtualizarEndereco(Guid id)
         {
             var fornecedor = await ObterFornecedorEndereco(id);
@@ -127,6 +139,7 @@ namespace Learning.App.Controllers
             return PartialView("_ModalEditEndereco", new FornecedorDTO { Endereco = fornecedor.Endereco });
         }
 
+        [Route("atualizar-endereco/{id:guid}")]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> AtualizarEndereco(FornecedorDTO fornecedorDTO)
@@ -144,6 +157,7 @@ namespace Learning.App.Controllers
             return Json(new { success = true, url });
         }
 
+        [Route("obter-endereco/{id:guid}")]
         public async Task<IActionResult> ObterEndereco(Guid id)
         {
             var fornecedor = await ObterFornecedorEndereco(id);

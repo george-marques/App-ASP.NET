@@ -8,6 +8,8 @@ using Learning.Business.Models;
 
 namespace Learning.App.Controllers
 {
+    [Route("")]
+    [Route("Produtos")]
     public class ProdutosController : Controller
     {
         private readonly IProdutoRepository _produtoRepository;
@@ -23,12 +25,14 @@ namespace Learning.App.Controllers
         }
 
         // GET: Produtos
+        [Route("lista-produtos")]
         public async Task<IActionResult> Index()
         {
             return View(_mapper.Map<IEnumerable<ProdutoDTO>>(await _produtoRepository.ObterProdutosFornecedores()));
         }
 
         // GET: Produtos/Details/5
+        [Route("detalhes/{id:guid}")]
         public async Task<IActionResult> Details(Guid id)
         {
             var produtoDTO = await ObterProduto(id);
@@ -42,6 +46,7 @@ namespace Learning.App.Controllers
         }
 
         // GET: Produtos/Create
+        [Route("adicionar")]
         public async Task<IActionResult> Create()
         {
             var ProdutoDTO = await PopularFornecedores(new ProdutoDTO());
@@ -49,6 +54,7 @@ namespace Learning.App.Controllers
         }
 
         // POST: Produtos/Create
+        [Route("adicionar")]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(ProdutoDTO produtoDTO)
@@ -72,6 +78,7 @@ namespace Learning.App.Controllers
         }
 
         // GET: Produtos/Edit/5
+        [Route("editar/{id:guid}")]
         public async Task<IActionResult> Edit(Guid id)
         {
             var produtoDTO = await ObterProduto(id);
@@ -85,6 +92,7 @@ namespace Learning.App.Controllers
         }
 
         // POST: Produtos/Edit/5
+        [Route("editar/{id:guid}")]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(Guid id, ProdutoDTO produtoDTO)
@@ -122,6 +130,7 @@ namespace Learning.App.Controllers
         }
 
         // GET: Produtos/Delete/5
+        [Route("excluir/{id:guid}")]
         public async Task<IActionResult> Delete(Guid id)
         {
             var produtoDTO = await ObterProduto(id);
