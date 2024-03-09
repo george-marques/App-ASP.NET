@@ -1,6 +1,4 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.EntityFrameworkCore;
 using Learning.App.ViewModels;
 using AutoMapper;
 using Learning.Business.Interfaces;
@@ -10,18 +8,24 @@ namespace Learning.App.Controllers
 {
     [Route("")]
     [Route("Produtos")]
-    public class ProdutosController : Controller
+    public class ProdutosController : BaseController
     {
         private readonly IProdutoRepository _produtoRepository;
         private readonly IFornecedorRepository _fornecedorRepository;
+        private readonly IProdutoService _produtoService;
         private readonly IMapper _mapper;
 
-        public ProdutosController(IProdutoRepository produtoRepository, IFornecedorRepository fornecedorRepository, IMapper mapper)
+        public ProdutosController(
+            IProdutoRepository produtoRepository, 
+            IFornecedorRepository fornecedorRepository, 
+            IMapper mapper, 
+            IProdutoService produtoService,
+            INotificador notificador) : base(notificador)
         {
             _produtoRepository = produtoRepository;
             _fornecedorRepository = fornecedorRepository;
             _mapper = mapper;
-
+            _produtoService = produtoService;
         }
 
         // GET: Produtos
@@ -72,7 +76,9 @@ namespace Learning.App.Controllers
 
             produtoDTO.Imagem = imgPrefixo + produtoDTO.ImagemUpload.FileName;
 
-            await _produtoRepository.Adicionar(_mapper.Map<Produto>(produtoDTO));
+            await _produtoService.Adicionar(_mapper.Map<Produto>(produtoDTO));
+
+            if (!OperacaoValida()) return View(produtoDTO);
 
             return RedirectToAction(nameof(Index));
         }
@@ -124,7 +130,9 @@ namespace Learning.App.Controllers
             produtoAtualizado.Valor = produtoDTO.Valor;
             produtoAtualizado.Ativo = produtoDTO.Ativo;
 
-            await _produtoRepository.Atualizar(_mapper.Map<Produto>(produtoAtualizado));
+            await _produtoService.Atualizar(_mapper.Map<Produto>(produtoAtualizado));
+
+            if (!OperacaoValida()) return View(produtoDTO);
 
             return RedirectToAction(nameof(Index));
         }
@@ -155,7 +163,11 @@ namespace Learning.App.Controllers
                 return NotFound();
             }
 
-            await _produtoRepository.Remover(id);
+            await _produtoService.Remover(id);
+
+            if (!OperacaoValida()) return View(produtoDTO);
+
+            TempData["Success"] = "Produto excluído com sucesso.";
 
             return RedirectToAction(nameof(Index));
         }

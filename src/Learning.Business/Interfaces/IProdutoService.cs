@@ -2,7 +2,7 @@
 
 namespace Learning.Business.Interfaces
 {
-    public interface IProdutoService
+    public interface IProdutoService : IDisposable
     {
         Task Adicionar(Produto produto);
         Task Atualizar(Produto produto);

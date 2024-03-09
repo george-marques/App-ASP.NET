@@ -8,17 +8,21 @@ namespace Learning.App.Controllers
 {
     [Route("")]
     [Route("Fornecedores")]
-    public class FornecedoresController : Controller
+    public class FornecedoresController : BaseController
     {
         private readonly IFornecedorRepository _fornecedorRepository;
-        private readonly IEnderecoRepository _enderecoRepository;
+        private readonly IFornecedorService _fornecedorService;
         private readonly IMapper _mapper;
 
 
-        public FornecedoresController(IFornecedorRepository fornecedorRepository, IEnderecoRepository enderecoRepository, IMapper mapper)
+        public FornecedoresController(
+            IFornecedorRepository fornecedorRepository, 
+            IFornecedorService fornecedorService, 
+            IMapper mapper,
+            INotificador notificador) : base(notificador)
         {
             _fornecedorRepository = fornecedorRepository;
-            _enderecoRepository = enderecoRepository;
+            _fornecedorService = fornecedorService;
             _mapper = mapper;
         }
 
@@ -60,7 +64,11 @@ namespace Learning.App.Controllers
                 return View(fornecedorDTO);
 
             var fornecedor = _mapper.Map<Fornecedor>(fornecedorDTO);
-            await _fornecedorRepository.Adicionar(fornecedor);
+            await _fornecedorService.Adicionar(fornecedor);
+
+            if (!OperacaoValida()) return View(fornecedorDTO);
+
+            TempData["Success"] = "Fornecedor cadastrado com sucesso.";
 
             return RedirectToAction(nameof(Index));
         }
@@ -92,7 +100,11 @@ namespace Learning.App.Controllers
                 return View(fornecedorDTO);
 
             var fornecedor = _mapper.Map<Fornecedor>(fornecedorDTO);
-            await _fornecedorRepository.Atualizar(fornecedor);
+            await _fornecedorService.Atualizar(fornecedor);
+
+            if (!OperacaoValida()) return View(await ObterFornecedorProdutosEndereco(id));
+
+            TempData["Success"] = "Produto editado com sucesso.";
 
             return RedirectToAction(nameof(Index));
 
@@ -122,7 +134,8 @@ namespace Learning.App.Controllers
             if (fornecedorDTO == null)
                 return NotFound();
 
-            await _fornecedorRepository.Remover(id);
+            await _fornecedorService.Remover(id);
+            if (!OperacaoValida()) return View(fornecedorDTO);
 
             return RedirectToAction(nameof(Index));
         }
@@ -151,7 +164,9 @@ namespace Learning.App.Controllers
             if (!ModelState.IsValid)
                 return PartialView("_ModalEditEndereco", fornecedorDTO);
 
-            await _enderecoRepository.Atualizar(_mapper.Map<Endereco>(fornecedorDTO.Endereco));
+            await _fornecedorService.AtualizarEndereco(_mapper.Map<Endereco>(fornecedorDTO.Endereco));
+            
+            if (!OperacaoValida()) return PartialView("_ModalEditEndereco", fornecedorDTO);
 
             var url = Url.Action("ObterEndereco", "Fornecedores", new { id = fornecedorDTO.Endereco.FornecedorId });
             return Json(new { success = true, url });
